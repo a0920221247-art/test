@@ -7,6 +7,7 @@ import sqlite3
 import csv  # <<< 必須補上這一行
 import serial
 import re
+import requests
 from datetime import datetime
 import pandas as pd
 import streamlit as st
@@ -1456,4 +1457,5 @@ with st.sidebar:
             st.toast("🚀 雲端模擬器已啟動！")
     else:
         st.session_state.is_simulating = False
+
 
