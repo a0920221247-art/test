@@ -193,7 +193,7 @@ def run_api_server():
     try:
         init_db()
         # 加入 log_level="error" 減少干擾
-        uvicorn.run(api_app, host="0.0.0.0", port=8000, log_level="error")
+        uvicorn.run(api_app, host="127.0.0.1", port=8000, log_level="critical")
     except Exception as e:
         print(f"API 伺服器啟動失敗 (可能 Port 8000 已被佔用): {e}")
 
@@ -1469,6 +1469,7 @@ with st.sidebar:
             st.toast("🚀 雲端模擬器已啟動！")
     else:
         st.session_state.is_simulating = False
+
 
 
 
