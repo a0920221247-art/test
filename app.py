@@ -206,6 +206,11 @@ if "api_thread_started" not in st.session_state:
     
     if is_port_open:
         thread = threading.Thread(target=run_api_server, daemon=True)
+        try:
+            from streamlit.runtime.scriptrunner import add_script_run_context
+            add_script_run_context(thread)
+        except:
+            pass
         thread.start()
         st.session_state.api_thread_started = True
         print("✅ API 服務啟動成功於 Port 8000")
@@ -1453,9 +1458,17 @@ with st.sidebar:
             st.session_state.is_simulating = True
             # 啟動背景執行緒
             t = threading.Thread(target=run_cloud_simulation, daemon=True)
+            # --- 新增這段來解決 Context 警告 ---
+            try:
+                from streamlit.runtime.scriptrunner import add_script_run_context
+                add_script_run_context(t)
+            except:
+                pass
+            # --------------------------------
             t.start()
             st.toast("🚀 雲端模擬器已啟動！")
     else:
         st.session_state.is_simulating = False
+
 
 
