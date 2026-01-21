@@ -484,8 +484,14 @@ def load_data():
     if 'products_db' not in st.session_state:
         st.session_state.products_db = pd.DataFrame()
         if os.path.exists(FILE_PRODUCTS):
-            try: st.session_state.products_db = pd.read_csv(FILE_PRODUCTS)
-            except: pass
+            try: 
+                # 先嘗試用 UTF-8 讀取
+                st.session_state.products_db = pd.read_csv(FILE_PRODUCTS, encoding='utf-8')
+            except UnicodeDecodeError:
+                # 如果失敗 (代表是 Windows Excel 存的)，改用 Big5 讀取
+                st.session_state.products_db = pd.read_csv(FILE_PRODUCTS, encoding='cp950') # cp950 就是 Big5
+            except Exception: 
+                pass
         if st.session_state.products_db.empty:
             st.session_state.products_db = pd.DataFrame(columns=["產品ID", "客戶名", "溫度等級", "品種", "密度", "長", "寬", "高", "下限", "準重", "上限", "備註1", "備註2", "備註3"])
     
@@ -1450,3 +1456,4 @@ with st.sidebar:
             st.toast("🚀 雲端模擬器已啟動！")
     else:
         st.session_state.is_simulating = False
+
