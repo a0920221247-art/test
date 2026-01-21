@@ -1,0 +1,8 @@
+streamlit
+pandas
+fastapi
+uvicorn
+pydantic
+streamlit-autorefresh
+requests
+pyserial
